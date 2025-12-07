@@ -167,7 +167,7 @@ ROBOT_IMAGE_FILES = {
     "Jaco 2": "assets/images/jaco-2.webp",
     "Kinova Gen3": "assets/images/kinova-gen3.webp",
     "Kuka iiwa": "assets/images/kuka-iiwa.png",
-    "MobileALOHA": "assets/images/mobile-aloha.png",
+    "MobileALOHA": "assets/images/mobile-aloha.avif",
     # "Multi-Robot": "",
     "PAMY2": "assets/images/pamy2.png",
     "PR2": "assets/images/pr2.jpg",
