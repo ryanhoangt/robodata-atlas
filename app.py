@@ -78,6 +78,10 @@ def load_data():
             if not dataset_id:
                 dataset_id = _slugify(dataset_name)
 
+            dataset_url = record.get("Dataset URL", "").strip()
+            if not dataset_url:
+                dataset_url = None
+
             rgb_cams = _parse_int(record.get("# RGB Cams"))
             depth_cams = _parse_int(record.get("# Depth Cams"))
             wrist_cams = _parse_int(record.get("# Wrist Cams"))
@@ -114,7 +118,7 @@ def load_data():
                     "id": dataset_id,
                     "name": dataset_name,
                     "description": record.get("Description", "").strip(),
-                    "url": None,
+                    "url": dataset_url,
                     "hardware": {
                         "robot": record.get("Robot", "Unknown").strip() or "Unknown",
                         "end_effector": record.get("Gripper", "Unknown").strip() or "Unknown",
@@ -361,6 +365,7 @@ if page == "Atlas":
     st.markdown(legend_html, unsafe_allow_html=True)
 
     st.markdown("Interactive map of robotics datasets. **Drag nodes** to explore connections.")
+    st.caption("Tip: Click a dataset node to open its dataset page in a new tab.")
 
     config = Config(
         width="100%",
@@ -475,6 +480,7 @@ else:
             {
                 "ID": d["id"],
                 "Dataset": d["name"],
+                "Dataset URL": d.get("url") or "",
                 "Robot": hardware.get("robot", "Unknown"),
                 "Morphology": hardware.get("morphology") or "Unspecified",
                 "Scene Type": task_env.get("environment", "Unknown"),
@@ -491,5 +497,15 @@ else:
             }
         )
 
-    st.dataframe(pd.DataFrame(table_rows), height=600)
+    df = pd.DataFrame(table_rows)
+    column_config = {}
+    if not df.empty:
+        df.rename(columns={"Dataset URL": "Dataset Link"}, inplace=True)
+        df["Dataset Link"] = df["Dataset Link"].apply(lambda url: url or None)
+        column_config["Dataset Link"] = st.column_config.LinkColumn(
+            "Dataset Link",
+            help="Open dataset website in a new tab",
+            display_text="Open",
+        )
+    st.dataframe(df, height=600, column_config=column_config)
 
