@@ -337,6 +337,11 @@ if page == "Atlas":
 
     st.title("RoboData Atlas 🗺️")
 
+    st.info(
+        "Have a robotics dataset or resource to contribute? "
+        "[Open an issue or pull request](https://github.com/ryanhoangt/robodata-atlas) and help expand the atlas."
+    )
+
     legend_html = """
     <style>
     .atlas-legend {display:flex; flex-wrap:wrap; gap:0.75rem; margin-bottom:1rem;}
